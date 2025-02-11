@@ -1,6 +1,8 @@
 # Ignore virtual environment
 Weather-Venv/
 
+APIKey.txt
+
 # Default things:
 # Byte-compiled / optimized / DLL files
 __pycache__/
