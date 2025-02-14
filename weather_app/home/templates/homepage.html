@@ -2,8 +2,33 @@
 <html>
 <body>
 
-<h1>Hello World!</h1>
-<p>Template</p>
+<h1>Weather App</h1>
+
+<form action="/home/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="OK">    
+</form>
+
+{% if displayWeather %}
+
+    {% if not city_names_match %}
+        <p>Couldn't find any city by the name of {{city}}, closest match is {{actual_city}}</p>
+    {% endif %}
+    
+    <p>Displaying weather data from {{actual_city}}, {{country}} (Coords - lat: {{lat}}, lon: {{lon}})</p>
+
+    <p>The weather is currently {{main_weather}}, with a description of {{description}}</p>
+
+    <p>The current temperature is {{temp}}, but it feels like {{feels_like}}</p>
+
+    <p>The pressure is {{pressure}}, the humidity is {{humidity}}</p>
+
+{% elif errorMessage != None %}
+
+    <p>{{errorMessage}}</p>
+
+{% endif %}
 
 </body>
 </html>
