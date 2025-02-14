@@ -9,37 +9,32 @@ from .api_calls import cityToCoords, getWeatherFromCoords
 
 def home(request):
   errorMessage = None
-  # if this is a POST request we need to process the form data
+  # If this is a POST request, process the form data
   if request.method == "POST":
-      # create a form instance and populate it with data from the request:
+      # Create a form instance and populate it with data from the request:
       form = CityForm(request.POST)
-      # check whether it's valid:
+      # Check whether it's valid:
       if form.is_valid():
-          # process the data in form.cleaned_data as required
-          # ...
-          
-          # TODO process data, see if need to process weather data.
+          # Process validated form - get weather data from city.
+          # NOTE: if there is no direct match to the city entered, the API returns the nearest match.
           city = form.cleaned_data["city"]
           lat, lon = cityToCoords(city)
           weatherData = getWeatherFromCoords(lat, lon)
           displayWeather = True
 
+          # In case the API is down / we run out of API calls.
           if weatherData == None:
             errorMessage = "There is an issue with the open weather map api, please try again later."
             displayWeather = False
 
-          #return render(request, "homepage.html", {"form": form})
-
-  # if a GET (or any other method) we'll create a blank form
+  # if a GET (or any other method) create a blank form
   else:
       form = CityForm()
       city = ""
       displayWeather = False
       weatherData = None
-      print("aaaaaaaaaaaaaaaa")
 
-  print(weatherData)
-
+  # If there was a POST request, and the API has returned some data, the form and data will be displayed.
   if displayWeather:
     context = {
       "form": form,
@@ -59,6 +54,7 @@ def home(request):
       "errorMessage": errorMessage,
     }
 
+  # Otherwise just display an emptt form.
   else:
     context = {
     "form": form,

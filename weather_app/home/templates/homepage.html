@@ -6,10 +6,12 @@
 
 <form action="/home/" method="post">
     {% csrf_token %}
+    <!-- Form automatically created to match the CityForm in forms.py -->
     {{ form }}
     <input type="submit" value="OK">    
 </form>
 
+<!-- If any weather data has been retrieved from the API then display it -->
 {% if displayWeather %}
 
     {% if not city_names_match %}
@@ -24,10 +26,12 @@
 
     <p>The pressure is {{pressure}}, the humidity is {{humidity}}</p>
 
+<!-- If we have no data and an error message then displau the message -->
 {% elif errorMessage != None %}
 
     <p>{{errorMessage}}</p>
 
+<!-- Otherwise display nothing as the user hasn't tried to search a location yet -->
 {% endif %}
 
 </body>
