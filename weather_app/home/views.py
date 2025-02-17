@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 
 from .forms import CityForm
 from .api_calls import cityToCoords, getWeatherFromCoords
+from .utils import kelvinToCelcius
 
 def home(request):
   errorMessage = None
@@ -44,6 +45,10 @@ def home(request):
 
   # If there was a POST request, and the API has returned some data, the form and data will be displayed.
   if displayWeather:
+
+    temp = round(kelvinToCelcius(weatherData["main"]["temp"]))
+    feels_like = round(kelvinToCelcius(weatherData["main"]["feels_like"]))
+
     context = {
       "form": form,
       "city": city,
@@ -54,8 +59,8 @@ def home(request):
       "lon": weatherData["coord"]["lon"],
       "main_weather": weatherData["weather"][0]["main"],
       "description": weatherData["weather"][0]["description"],
-      "temp": weatherData["main"]["temp"],
-      "feels_like": weatherData["main"]["feels_like"],
+      "temp": temp,
+      "feels_like": feels_like,
       "pressure": weatherData["main"]["pressure"],
       "humidity": weatherData["main"]["humidity"],
       "displayWeather": displayWeather,
