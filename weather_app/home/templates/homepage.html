@@ -1,38 +1,73 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
+
+<link rel="stylesheet" href="{% static 'styles.css' %}">
+
 <body>
 
-<h1>Weather App</h1>
+    <div>
 
-<form action="/home/" method="post">
-    {% csrf_token %}
-    <!-- Form automatically created to match the CityForm in forms.py -->
-    {{ form }}
-    <input type="submit" value="OK">    
-</form>
+        <h1>Weather App</h1>
+        <div class="form_container">
+            <form action="/home/" method="post">
+                {% csrf_token %}
+                <!-- Form automatically created to match the CityForm in forms.py -->
+                {{ form }}
+                <input type="submit" value="OK">    
+            </form>
+        </div>
 
-<!-- If any weather data has been retrieved from the API then display it -->
-{% if displayWeather %}
+        <hr>
 
-    {% if not city_names_match %}
-        <p>Couldn't find any city by the name of {{city}}, closest match is {{actual_city}}</p>
-    {% endif %}
-    
-    <p>Displaying weather data from {{actual_city}}, {{country}} (Coords - lat: {{lat}}, lon: {{lon}})</p>
+        <!-- If any weather data has been retrieved from the API then display it -->
+        {% if displayWeather %}
 
-    <p>The weather is currently {{main_weather}}, with a description of {{description}}</p>
+            {% if not city_names_match %}
+                <p>Couldn't find any city by the name of {{city}}, closest match is {{actual_city}}</p>
+            {% endif %}
+            
+            <h2>{{actual_city}}, {{country}} (lat: {{lat}}, lon: {{lon}})</h2>
 
-    <p>The current temperature is {{temp}}, but it feels like {{feels_like}}</p>
+            <hr>
 
-    <p>The pressure is {{pressure}}, the humidity is {{humidity}}</p>
+            <h2 class="weather">{{main_weather}}</h2>
+            <p class="weather">{{description}}</p>
+            
+            <ul>
+                <li>Temp
+                    <ul>
+                        <li>{{temp}}</li>
+                    </ul>
+                </li>
+                <li>Feels like
+                    <ul>
+                        <li>{{feels_like}}</li>
+                    </ul>
+                </li>
+                <li>Pressure
+                    <ul>
+                        <li>{{pressure}}</li>
+                    </ul>
+                </li>
+                <li>Humidity
+                    <ul>
+                        <li>{{humidity}}</li>
+                    </ul>
+                </li>
+            </ul>  
 
-<!-- If we have no data and an error message then displau the message -->
-{% elif errorMessage != None %}
 
-    <p>{{errorMessage}}</p>
+        <!-- If we have no data and an error message then displau the message -->
+        {% elif errorMessage != None %}
 
-<!-- Otherwise display nothing as the user hasn't tried to search a location yet -->
-{% endif %}
+            <p class="error">{{errorMessage}}</p>
+
+        <!-- Otherwise display nothing as the user hasn't tried to search a location yet -->
+        {% endif %}
+
+</div>
 
 </body>
 </html>
