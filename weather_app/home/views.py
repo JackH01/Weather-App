@@ -16,17 +16,25 @@ def home(request):
       # Check whether it's valid:
       if form.is_valid():
           # Process validated form - get weather data from city.
-          # NOTE: if there is no direct match to the city entered, the API returns the nearest match.
-          city = form.cleaned_data["city"]
-          lat, lon = cityToCoords(city)
-          weatherData = getWeatherFromCoords(lat, lon)
-          displayWeather = True
+          
+          # Check for errors when accessing API.
+          try:
+            # NOTE: if there is no direct match to the city entered, the API returns the nearest match.
+            city = form.cleaned_data["city"]
+            lat, lon = cityToCoords(city)
+            weatherData = getWeatherFromCoords(lat, lon)
+            displayWeather = True
 
-          # In case the API is down / we run out of API calls.
-          if weatherData == None:
-            errorMessage = "There is an issue with the open weather map api, please try again later."
+             # In case the API is down / we run out of API calls.
+            if weatherData == None:
+              displayWeather = False
+              errorMessage = "There is an issue with the open weather map api, please try again later."
+
+          except:
             displayWeather = False
+            errorMessage = "There is an issue with your request. Please try another city."
 
+         
   # if a GET (or any other method) create a blank form
   else:
       form = CityForm()
