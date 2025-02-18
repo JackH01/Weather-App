@@ -7,10 +7,10 @@
 
 <body>
 
-    <div>
+    <div class="main_container">
 
         <h1>Weather App</h1>
-        <div class="form_container">
+        <div>
             <form action="/home/" method="post">
                 {% csrf_token %}
                 <!-- Form automatically created to match the CityForm in forms.py -->
@@ -19,14 +19,14 @@
             </form>
         </div>
 
-        <hr>
-
         <!-- If any weather data has been retrieved from the API then display it -->
         {% if displayWeather %}
 
             {% if not city_names_match %}
                 <p>Couldn't find any city by the name of {{city}}, closest match is {{actual_city}}</p>
             {% endif %}
+
+            <hr>
             
             <h2>{{actual_city}}, {{country}} (lat: {{lat}}, lon: {{lon}})</h2>
 
@@ -35,6 +35,8 @@
             <h2 class="weather">{{main_weather}}</h2>
             <p class="weather">{{description}}</p>
             
+            <hr>
+
             <ul>
                 <li>Temp
                     <ul>
